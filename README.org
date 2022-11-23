@@ -66,9 +66,10 @@ http://webgisdemo.opengis.ch:8811
 - https://github.com/qwc-services Cette organisation Github contient
   les repository qui contiennent les composants serveur.
 * Où trouver de l'aide ?
-- https://lists.osgeo.org/mailman/listinfo/qgis-qwc2 Documentation officielle
+- https://github.com/qgis/qwc2-demo-app/blob/master/doc/QWC2_Documentation.md
+  Documentation officielle
 - https://github.com/qgis/qwc2-demo-app/issues Github issues
-- https://lists.osgeo.org/mailman/listinfo/qgis-qwc2 Mailin list
+- https://lists.osgeo.org/mailman/listinfo/qgis-qwc2 Mailing list
 - OPENGIS.ch
 * Requirements
 Environnement de développement minimal
@@ -145,7 +146,7 @@ https://hub.docker.com/_/caddy
 
 Nous modifions le docker-compose.yml en ajoutant le service caddy :
 #+begin_src yaml
-    caddy:
+  caddy:
     image: caddy:2.6.2-alpine
     volumes:
       - ./qwc2-demo-app/prod:/usr/share/caddy
