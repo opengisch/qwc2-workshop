@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>QWC2 Workshop</title>
+<meta name="author" content="Mario"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/black.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'https://cdn.jsdelivr.net/npm/reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h1 class="title">QWC2 Workshop</h1><p class="subtitle"></p>
+<h2 class="author">Mario</h2><p class="date">Created: 2022-11-23 Wed 07:48</p>
+</section>
+<section id="sec-table-of-contents"><div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#/slide-org8c29ce7">1. Goals</a></li>
+<li><a href="#/slide-org90a51a4">2. What is QWC2?</a></li>
+<li><a href="#/slide-org7321e17">3. Components</a>
+<ul>
+<li><a href="#/slide-org4ea63fd">3.1. Map Components</a></li>
+<li><a href="#/slide-org42276d6">3.2. Build Toolchain</a></li>
+</ul>
+</li>
+<li><a href="#/slide-org7712788">4. Features</a>
+<ul>
+<li><a href="#/slide-org9032ed3">4.1. Core modules</a></li>
+<li><a href="#/slide-org58033b8">4.2. Features with server components (REST services)</a></li>
+</ul>
+</li>
+<li><a href="#/slide-org38e25cf">5. Where to find it?</a></li>
+<li><a href="#/slide-org2d8fe2d">6. How to get help?</a></li>
+<li><a href="#/slide-orga93deb3">7. Requirements</a></li>
+<li><a href="#/slide-org6860d90">8. Practical part</a>
+<ul>
+<li><a href="#/slide-org792fbf0">8.1. Exoscale machine preparation</a></li>
+<li><a href="#/slide-orga24c51d">8.2. Minimal QWC2 Installation (no Docker)</a></li>
+<li><a href="#/slide-orga14a612">8.3. Containerization using Docker</a></li>
+<li><a href="#/slide-orgd51b69d">8.4. Webserver</a></li>
+<li><a href="#/slide-org42d20c8">8.5. QGIS server</a></li>
+<li><a href="#/slide-orgdb24f0c">8.6. Proxy with Caddy</a></li>
+</ul>
+</li>
+<li><a href="#/slide-orga575abc">9. Theme/Project Configuration</a></li>
+<li><a href="#/slide-org447a8ba">10. Application Configuration</a></li>
+<li><a href="#/slide-orgf541fdd">11. Search Providers</a></li>
+<li><a href="#/slide-org65b94d2">12. WebGIS Signalo Structure</a></li>
+<li><a href="#/slide-orgda7f235">13. Part 1 (2h)</a></li>
+<li><a href="#/slide-org6aa4048">14. Todos</a></li>
+</ul>
+</div>
+</div>
+</section>
+
+<section>
+<section id="slide-org8c29ce7">
+<h2 id="org8c29ce7"><span class="section-number-2">1.</span> Goals</h2>
+<p>
+Gli obiettivi di questo workshop sono:
+</p>
+<ul>
+<li>conoscere le funzionalità principali di QWC2</li>
+<li>essere in grado di creare una semplice webapp QWC2</li>
+<li>preparare un'infrastruttura Docker per servire la web app</li>
+<li>configurare la web app</li>
+<li>pubblicare progetti QGIS</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org90a51a4">
+<h2 id="org90a51a4"><span class="section-number-2">2.</span> What is QWC2?</h2>
+<p>
+QWC2 è un web client per QGIS server.
+</p>
+<ul>
+<li>TODO: schema semplice</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org7321e17">
+<h2 id="org7321e17"><span class="section-number-2">3.</span> Components</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+</section>
+<section id="slide-org4ea63fd">
+<h3 id="org4ea63fd"><span class="section-number-3">3.1.</span> Map Components</h3>
+<ul>
+<li>ReactJS + Redux</li>
+<li>OpenLayers</li>
+
+</ul>
+</section>
+<section id="slide-org42276d6">
+<h3 id="org42276d6"><span class="section-number-3">3.2.</span> Build Toolchain</h3>
+<ul>
+<li>nodejs</li>
+<li>yarn</li>
+<li>webpack</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org7712788">
+<h2 id="org7712788"><span class="section-number-2">4.</span> Features</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+</section>
+<section id="slide-org9032ed3">
+<h3 id="org9032ed3"><span class="section-number-3">4.1.</span> Core modules</h3>
+<ul>
+<li>Theme (project) browser</li>
+<li>Layer tree</li>
+<li>Feature info</li>
+<li>Search with configurable providers</li>
+<li>Measure tools</li>
+<li>Sketching / redlining functionality</li>
+<li>Permalink generation</li>
+<li>PDF-Print</li>
+<li>Screenshot / Raster export</li>
+<li>WMS / WFS import</li>
+<li>KML import</li>
+<li>Map comparison tool</li>
+
+</ul>
+</section>
+<section id="slide-org58033b8">
+<h3 id="org58033b8"><span class="section-number-3">4.2.</span> Features with server components (REST services)</h3>
+<p>
+TODO: <a href="http://webgisdemo.opengis.ch:8811">http://webgisdemo.opengis.ch:8811</a>
+</p>
+<ul>
+<li>Authentication</li>
+<li>User management</li>
+<li>DB search</li>
+<li>Permalinks</li>
+<li>Reporting</li>
+<li>Editing</li>
+<li>Mapinfo service (layer independent)</li>
+<li>Legend priting</li>
+<li>Height profiles</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org38e25cf">
+<h2 id="org38e25cf"><span class="section-number-2">5.</span> Where to find it?</h2>
+<ul>
+<li><a href="https://github.com/qwc-services">https://github.com/qwc-services</a></li>
+<li><a href="https://github.com/qgis/qwc2">https://github.com/qgis/qwc2</a> This repository contains the common
+QWC2 application components from which you can build your own
+personal QWC2 application.</li>
+<li><a href="https://github.com/qgis/qwc2-demo-app">https://github.com/qgis/qwc2-demo-app</a></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org2d8fe2d">
+<h2 id="org2d8fe2d"><span class="section-number-2">6.</span> How to get help?</h2>
+<p>
+TODO:
+</p>
+</section>
+</section>
+<section>
+<section id="slide-orga93deb3">
+<h2 id="orga93deb3"><span class="section-number-2">7.</span> Requirements</h2>
+<p>
+minimal development environment
+</p>
+<ul>
+<li>git</li>
+<li>node</li>
+<li>yarn</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org6860d90">
+<h2 id="org6860d90"><span class="section-number-2">8.</span> Practical part</h2>
+<p>
+Online cloud server or local machine
+</p>
+</section>
+<section id="slide-org792fbf0">
+<h3 id="org792fbf0"><span class="section-number-3">8.1.</span> Exoscale machine preparation</h3>
+<p>
+Swiss Cloud provider, with servers in CH, DE, AT, BG.
+</p>
+<ul>
+<li>Ubuntu 22.04 LTS (GVA)</li>
+<li>Small</li>
+<li>webserver and devservers groups</li>
+
+</ul>
+</section>
+<section id="slide-orga24c51d">
+<h3 id="orga24c51d"><span class="section-number-3">8.2.</span> Minimal QWC2 Installation (no Docker)</h3>
+<div class="org-src-container">
+
+<pre  class="src src-sh"   ><code trim>sudo bash
+apt update
+apt install nodejs npm unzip
+npm install -g yarn
+git clone --recursive https://github.com/qgis/qwc2-demo-app.git
+cd qwc2-demo-app
+yarn install
+yarn start
+</code></pre>
+</div>
+
+<p>
+Browse &lt;IP ADDRESS&gt;:8081
+</p>
+
+<div class="org-src-container">
+
+<pre  class="src src-sh"   ><code trim>yarn run prod
+ls ./prod
+</code></pre>
+</div>
+</section>
+<section id="slide-orga14a612">
+<h3 id="orga14a612"><span class="section-number-3">8.3.</span> Containerization using Docker</h3>
+<p>
+Adesso prepariamo un container per fare il build dell'applicazione
+così non abbiamo bisogno di dipendenze locali tipo node ecc ed è
+riproducibile, usiamo docker-compose, così poi andiamo ad aggiungere
+un po' alla volta anche altri componenti.
+</p>
+
+<div class="org-src-container">
+
+<pre  class="src src-sh"   ><code trim>apt install docker.io
+apt install docker-compose
+</code></pre>
+</div>
+
+<p>
+Creiamo docker-compose.yml in <code>/home/ubuntu/</code>
+</p>
+
+<div class="org-src-container">
+
+<pre  class="src src-yaml"   ><code trim>version: '3'
+
+services:
+
+  qwc2:
+    image: node:18.10
+    volumes:
+      - ./qwc2-demo-app:/io/app
+    command: &gt;
+      bash -c "cd /io/app &amp;&amp;
+               yarn install &amp;&amp;
+               yarn start"
+    ports:
+      - 8081:8081
+</code></pre>
+</div>
+</section>
+<section id="slide-orgd51b69d">
+<h3 id="orgd51b69d"><span class="section-number-3">8.4.</span> Webserver</h3>
+<p>
+Cambiamo adesso perché vogliamo usarlo solo come builder e aggiungere un webserver
+quindi cambiamo l'ultima riga nel "command" in "yarn run prod" e togliamo ports&#x2026;
+</p>
+
+<p>
+proviamo e vediamo la versione dei file generati
+</p>
+
+<p>
+adesso abbiamo un processo che ci genera l'app che ci serve. andiamo a mettere un webserver adesso
+<a href="https://hub.docker.com/_/caddy">https://hub.docker.com/_/caddy</a>
+</p>
+
+<p>
+spiegare Caddy
+</p>
+
+<p>
+modifichiamo il docker-compose.yml aggiungendo il service caddy:
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-yaml"   ><code trim>caddy:
+image: caddy:2.6.2-alpine
+volumes:
+  - ./qwc2-demo-app/prod:/usr/share/caddy
+ports:
+  - 80:80
+</code></pre>
+</div>
+</section>
+<section id="slide-org42d20c8">
+<h3 id="org42d20c8"><span class="section-number-3">8.5.</span> QGIS server</h3>
+<p>
+Adesso vogliamo aggiungere un nostro progetto qgis e non solo wms diretti tramite un geo server esterno.
+Quindi aggiungiamo un QGIS server per pubblicare i nostri progetti
+</p>
+
+<p>
+mkdir qgis
+<a href="https://docs.qfield.org/assets/projects/simple-bee-farming.zip">https://docs.qfield.org/assets/projects/simple-bee-farming.zip</a>
+</p>
+
+<p>
+curl -L -O <a href="https://docs.qfield.org/assets/projects/simple-bee-farming.zip">https://docs.qfield.org/assets/projects/simple-bee-farming.zip</a>
+unzip simple-bee-farming.zip -d simple<sub>bee</sub><sub>farming</sub>
+</p>
+
+<p>
+modifichiamo docker-compose.yml
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-yaml"   ><code trim>qgis-server:
+  image: opengisch/qgis-server:3.28.0-jammy
+  volumes:
+    - ./qgis:/io/data
+  expose:
+    - 9993
+  ports:
+    - 8080:80
+</code></pre>
+</div>
+
+<p>
+possiamo provare le richieste da browser direttamente
+<a href="http://194.182.160.95:8080/ogc/simple_bee_farming?SERVICE=WMS&amp;REQUEST=GetProjectSettings">http://194.182.160.95:8080/ogc/simple_bee_farming?SERVICE=WMS&amp;REQUEST=GetProjectSettings</a>
+</p>
+</section>
+<section id="slide-orgdb24f0c">
+<h3 id="orgdb24f0c"><span class="section-number-3">8.6.</span> Proxy with Caddy</h3>
+<p>
+Ma tipo getFeatureInfo non va perché URL diversi, dobbiamo fare in
+modo di far passare tutto dallo stesso punto, cioè caddy, che ha anche
+il vantaggio se usiamo HTTPS
+</p>
+
+<p>
+Caddyfile
+</p>
+<pre  class="example" >
+  194.182.160.95:80 {
+
+  # Set this path to your site's directory.
+  root * /usr/share/caddy
+
+  # Enable the static file server.
+  file_server
+
+  log {
+    level DEBUG
+    output stdout
+  }
+
+  @ows {
+    path_regexp map_file ^/ows/(.*)
+  }
+
+  # https://localhost/ows/bees?SERVICE=WMS&amp;REQUEST=GetCapabilities
+  # directly call QGIS via fcgi
+  reverse_proxy @ows qgis-server:9993 {
+    transport fastcgi {
+      env QUERY_STRING {query}&amp;map=/io/data/{http.regexp.map_file.1}/{http.regexp.map_file.1}.qgs
+    }
+  }
+}
+</pre>
+
+<p>
+docker-compose.yml
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-yaml"   ><code trim>caddy:
+  image: caddy:2.6.2-alpine
+  volumes:
+    - ./qwc2-demo-app/prod:/usr/share/caddy
+    - ./Caddyfile:/etc/caddy/Caddyfile
+  ports:
+    - 80:80
+</code></pre>
+</div>
+
+<p>
+possiamo togliere qgis-server port e disabilitare nginx interno e usare solament fcgi
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-yaml"   ><code trim>expose:
+  - 9993
+environment:
+  SKIP_NGINX: "true"
+</code></pre>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-orga575abc">
+<h2 id="orga575abc"><span class="section-number-2">9.</span> Theme/Project Configuration</h2>
+<ul>
+<li>Print</li>
+<li>Basemaps</li>
+<li>&#x2026;</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org447a8ba">
+<h2 id="org447a8ba"><span class="section-number-2">10.</span> Application Configuration</h2>
+<ul>
+<li>Desktop and Mobile</li>
+<li>Disable plugins</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgf541fdd">
+<h2 id="orgf541fdd"><span class="section-number-2">11.</span> Search Providers</h2>
+</section>
+</section>
+<section>
+<section id="slide-org65b94d2">
+<h2 id="org65b94d2"><span class="section-number-2">12.</span> WebGIS Signalo Structure</h2>
+</section>
+</section>
+<section>
+<section id="slide-orgda7f235">
+<h2 id="orgda7f235"><span class="section-number-2">13.</span> Part 1 (2h)</h2>
+<ul>
+<li>What is QWC2
+<ul>
+<li>può funzionare senza qgis server, ma chiaramente ci sono dei
+vantaggi a farlo integrato e ottiene informazioni da progetto</li>
+<li>schema qwc2
+<ul>
+<li>js input -&gt; webapp pacchetto (QWC2App.js) + json (config.json + themes.json) output</li>
+
+</ul></li>
+<li>schema browser
+<ul>
+<li>on page load webserver pacchetto + json</li>
+<li>wms wfs etc from qgis server</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+
+
+<ul>
+<li>minimal solution (qgis project, qgis server, qwc2, webserver?)
+<ul>
+<li>configuration
+<ul>
+<li>files tree</li>
+<li>config.json
+<ul>
+<li>desktop and mobile</li>
+
+</ul></li>
+<li>themesConfig.json</li>
+<li>output: -&gt; themes.json</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+
+
+</section>
+</section>
+<section>
+<section id="slide-org6aa4048">
+<h2 id="org6aa4048"><span class="section-number-2">14.</span> Todos</h2>
+<ul>
+<li class="on"><code>[X]</code> Check exoscale configurations</li>
+<li class="on"><code>[X]</code> Check clemens' presentation</li>
+<li class="on"><code>[X]</code> terminal emulator instead of alacritty?</li>
+<li class="off"><code>[&#xa0;]</code> Preparare schemi excalidraw
+<ul>
+<li>minimal</li>
+<li>input/output</li>
+<li>services</li>
+
+</ul></li>
+<li class="on"><code>[X]</code> Check exoscale with password</li>
+<li class="off"><code>[&#xa0;]</code> Tip browser, no cache</li>
+<li class="off"><code>[&#xa0;]</code> Comandi che useremo docker ecc</li>
+<li class="off"><code>[&#xa0;]</code> Spiegazione fastcgi</li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+transition: 'cube',
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+
+});
+
+</script>
+</body>
+</html>
