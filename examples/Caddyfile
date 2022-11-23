@@ -1,0 +1,25 @@
+  194.182.160.95:80 {
+
+  # Set this path to your site's directory.
+  root * /usr/share/caddy
+
+  # Enable the static file server.
+  file_server
+
+  log {
+    level DEBUG
+    output stdout
+  }
+
+  @ows {
+    path_regexp map_file ^/ows/(.*)
+  }
+
+  # https://localhost/ows/bees?SERVICE=WMS&REQUEST=GetCapabilities
+  # directly call QGIS via fcgi
+  reverse_proxy @ows qgis-server:9993 {
+    transport fastcgi {
+      env QUERY_STRING {query}&map=/io/data/{http.regexp.map_file.1}/{http.regexp.map_file.1}.qgs
+    }
+  }
+}

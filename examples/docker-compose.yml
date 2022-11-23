@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+
+  qwc2:
+    image: node:18.10
+    volumes:
+      - ./qwc2-demo-app:/io/app
+    command: >
+      bash -c "cd /io/app &&
+               yarn install &&
+               yarn run prod"
+
+  caddy:
+    image: caddy:2.6.2-alpine
+    volumes:
+      - ./qwc2-demo-app/prod:/usr/share/caddy
+    ports:
+      - 80:80
+
+  qgis-server:
+    image: opengisch/qgis-server:3.28.0-jammy
+    volumes:
+      - ./qgis:/io/data
+    expose:
+      - 9993
+    environment:
+      SKIP_NGINX: "true"
