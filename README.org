@@ -1,18 +1,28 @@
 #+title: QWC2 Workshop
+#+REVEAL_HLEVEL: 1
+#+REVEAL_INIT_OPTIONS: transition: 'cube'
+#+REVEAL_THEME: black
+#+STARTUP: inlineimages
+#+OPTIONS: toc:nil
+#+begin_export html
+<style>
+.reveal li {font-size: 60%;}
+</style>
+#+end_export
 
-* Goals
-TODO:
-- structure de l'application
-- Configuration de WebGIS
-- préparation et publication de projets QGIS
-- Installation avec Docker
+* Objectifs
+Les objectifs de ce workshop sont :
+- de connaître les principales fonctionnalités de QWC2
+- être capable de créer une application web QWC2 simple
+- préparer une infrastructure Docker pour servir l'application web
+- configurer l'application web
+- configurer et publier des projets QGIS
+* Qu'est-ce que QWC2 ?
+QWC2 est un client web pour le serveur QGIS.
 
-* Schedule
-- Parte 1 e parte 2
-* What is QWC2?
-QWC2 è un web client per QGIS server.
-- TODO: schema semplice
-* Components
+[[./assets/images/simple.png]]
+
+* Composants
 ** Map Components
     - ReactJS + Redux
     - OpenLayers
@@ -20,52 +30,59 @@ QWC2 è un web client per QGIS server.
     - nodejs
     - yarn
     - webpack
-* Features
+** Build
+[[./assets/images/build.png]]
+* Fonctionnalités
 ** Core modules
-    - Theme (project) browser
+    - Navigateur de thème (projet)
     - Layer tree
     - Feature info
-    - Search with configurable providers
-    - Measure tools
-    - Sketching / redlining functionality
-    - Permalink generation
-    - PDF-Print
-    - Screenshot / Raster export
-    - WMS / WFS import
-    - KML import
-    - Map comparison tool
-** Features with server components (REST services)
-TODO: http://webgisdemo.opengis.ch:8811
-    - Authentication
-    - User management
-    - DB search
+    - Recherche configurables
+    - Outils de mesure
+    - Fonctionnalité d'esquisse / redlining
+    - Génération de liens permanents
+    - Impression PDF
+    - Exportation de captures d'écran / Raster
+    - Importation WMS / WFS
+    - Importation KML
+    - Outil de comparaison de cartes
+http://webgisdemo.opengis.ch:8811
+** Fonctionnalités avec composants serveur (services REST)
+    - Authentification
+    - Gestion des utilisateurs
+    - Recherche dans la base de données
     - Permalinks
-    - Reporting
-    - Editing
-    - Mapinfo service (layer independent)
-    - Legend priting
-    - Height profiles
-* Where to find it?
-- https://github.com/qwc-services
-- https://github.com/qgis/qwc2 This repository contains the common
-  QWC2 application components from which you can build your own
-  personal QWC2 application.
-- https://github.com/qgis/qwc2-demo-app
-* How to get help?
-TODO:
+    - Édition
+    - Service Mapinfo (indépendant des couches)
+    - Impression de légendes
+    - Profils de hauteur
+* Où le trouver ?
+- https://github.com/qgis/qwc2 Ce repository contient les composants
+  communs de l'application QWC2 à partir desquels vous
+  pouvez construire votre propre application QWC2 personnelle.
+- https://github.com/qgis/qwc2-demo-app Ce repository contient un
+  exemple d'application QWC2 que vous pouvez utiliser comme base pour
+  créer votre propre application.
+- https://github.com/qwc-services Cette organisation Github contient
+  les repository qui contiennent les composants serveur.
+* Où trouver de l'aide ?
+- https://lists.osgeo.org/mailman/listinfo/qgis-qwc2 Documentation officielle
+- https://github.com/qgis/qwc2-demo-app/issues Github issues
+- https://lists.osgeo.org/mailman/listinfo/qgis-qwc2 Mailin list
+- OPENGIS.ch
 * Requirements
-minimal development environment
+Environnement de développement minimal
   - git
   - node
   - yarn
-* Practical part
-Online cloud server or local machine
-** Exoscale machine preparation
-Swiss Cloud provider, with servers in CH, DE, AT, BG.
+* Partie pratique
+Serveur cloud en ligne ou machine locale avec ligne de commande Linux et docker
+** Préparation des machine Exoscale
+Swiss Cloud provider, avec servers en CH, DE, AT, BG.
 - Ubuntu 22.04 LTS (GVA)
 - Small
 - webserver and devservers groups
-** Minimal QWC2 Installation (no Docker)
+** Installation minimale de QWC2 (sans Docker)
 #+begin_src sh
 sudo bash
 apt update
@@ -77,24 +94,26 @@ yarn install
 yarn start
 #+end_src
 
-Browse <IP ADDRESS>:8081
+Nous allons à l'adresse <IP ADDRESS>:8081
+
+Conseil : désactivez le cache du navigateur
 
 #+begin_src sh
 yarn run prod
 ls ./prod
 #+end_src
-** Containerization using Docker
-Adesso prepariamo un container per fare il build dell'applicazione
-così non abbiamo bisogno di dipendenze locali tipo node ecc ed è
-riproducibile, usiamo docker-compose, così poi andiamo ad aggiungere
-un po' alla volta anche altri componenti.
+** Conteneurisation à l'aide de Docker
+Maintenant nous préparons un conteneur pour construire l'application
+donc nous n'avons pas besoin de dépendances locales comme node etc. et
+il est reproductible, nous utilisons docker-compose, de sorte que nous
+pouvons ensuite ajouter les autres composants, un peu à la fois.
 
 #+begin_src sh
 apt install docker.io
 apt install docker-compose
 #+end_src
 
-Creiamo docker-compose.yml in =/home/ubuntu/=
+Nous créons docker-compose.yml dans le répertoire =/home/ubuntu/=
 
 #+begin_src yaml
 version: '3'
@@ -113,17 +132,18 @@ services:
       - 8081:8081
 #+end_src
 ** Webserver
-Cambiamo adesso perché vogliamo usarlo solo come builder e aggiungere un webserver
-quindi cambiamo l'ultima riga nel "command" in "yarn run prod" e togliamo ports...
+Changeons-le maintenant car nous voulons seulement l'utiliser comme un
+constructeur et ajouter un serveur web. Nous changeons donc la
+dernière ligne de la 'commande' en =yarn run prod= et nous fermons les
+ports...
 
-proviamo e vediamo la versione dei file generati
+Nous avons maintenant un processus qui génère l'application dont nous
+avons besoin. Nous allons mettre un serveur web maintenant. Caddy.
 
-adesso abbiamo un processo che ci genera l'app che ci serve. andiamo a mettere un webserver adesso
+https://caddyserver.com/
 https://hub.docker.com/_/caddy
 
-spiegare Caddy
-
-modifichiamo il docker-compose.yml aggiungendo il service caddy:
+Nous modifions le docker-compose.yml en ajoutant le service caddy :
 #+begin_src yaml
     caddy:
     image: caddy:2.6.2-alpine
@@ -133,16 +153,19 @@ modifichiamo il docker-compose.yml aggiungendo il service caddy:
       - 80:80
 #+end_src
 ** QGIS server
-Adesso vogliamo aggiungere un nostro progetto qgis e non solo wms diretti tramite un geo server esterno.
-Quindi aggiungiamo un QGIS server per pubblicare i nostri progetti
+Maintenant, nous voulons ajouter notre propre projet qgis et ne pas
+simplement utiliser des wms directs via un serveur géographique
+externe. Ajoutons donc un serveur QGIS pour publier nos projets.
 
+Nous téléchargeons l'un des projets d'exemple de QField
+https://docs.qfield.org/get-started/sample-projects/.
+#+begin_src sh
 mkdir qgis
-https://docs.qfield.org/assets/projects/simple-bee-farming.zip
-
 curl -L -O https://docs.qfield.org/assets/projects/simple-bee-farming.zip
 unzip simple-bee-farming.zip -d simple_bee_farming
+#+end_src
 
-modifichiamo docker-compose.yml
+Nous modifions le docker-compose.yml en ajoutant le service qgis-server :
 #+begin_src yaml
   qgis-server:
     image: opengisch/qgis-server:3.28.0-jammy
@@ -154,12 +177,15 @@ modifichiamo docker-compose.yml
       - 8080:80
 #+end_src
 
-possiamo provare le richieste da browser direttamente
-http://194.182.160.95:8080/ogc/simple_bee_farming?SERVICE=WMS&REQUEST=GetProjectSettings
-** Proxy with Caddy
-Ma tipo getFeatureInfo non va perché URL diversi, dobbiamo fare in
-modo di far passare tutto dallo stesso punto, cioè caddy, che ha anche
-il vantaggio se usiamo HTTPS
+Nous pouvons essayer les requêtes du navigateur directement
+http://<IP ADDRESS>:8080/ogc/simple_bee_farming?SERVICE=WMS&REQUEST=GetProjectSettings
+
+** Proxy avec Caddy
+Mais certaines choses comme getFeatureInfo ne fonctionnent pas parce
+qu'elles sont sur des URL différentes, nous devons nous assurer que
+tout passe par le même endroit, c'est-à-dire caddy, ce qui a aussi
+l'avantage, si nous utilisons HTTPS, de configurer les certificats en
+un seul endroit.
 
 Caddyfile
 #+begin_src
@@ -201,53 +227,26 @@ docker-compose.yml
       - 80:80
 #+end_src
 
-possiamo togliere qgis-server port e disabilitare nginx interno e usare solament fcgi
+Nous pouvons supprimer les ports de qgis-server et désactiver nginx
+interne et utiliser seulement FastCGI.
+
+FastCGI est une technique permettant la communication entre un serveur
+HTTP et un logiciel indépendant, c'est une évolution de Common Gateway
+Interface, abrégée en CGI, signifiant en anglais « Interface
+passerelle commune ».
 #+begin_src yaml
     expose:
       - 9993
     environment:
       SKIP_NGINX: "true"
 #+end_src
-* Theme/Project Configuration
+* Configuration des thèmes et des projets
 - Print
 - Basemaps
 - ...
-* Application Configuration
+* Configuration de l'application
 - Desktop and Mobile
 - Disable plugins
 * Search Providers
 * WebGIS Signalo Structure
-* Part 1 (2h)
-- What is QWC2
-  - può funzionare senza qgis server, ma chiaramente ci sono dei
-    vantaggi a farlo integrato e ottiene informazioni da progetto
-  - schema qwc2
-    - js input -> webapp pacchetto (QWC2App.js) + json (config.json + themes.json) output
-  - schema browser
-    - on page load webserver pacchetto + json
-    - wms wfs etc from qgis server
-
-
-
-- minimal solution (qgis project, qgis server, qwc2, webserver?)
-  - configuration
-    - files tree
-    - config.json
-      - desktop and mobile
-    - themesConfig.json
-    - output: -> themes.json
-
-
-
-* Todos
-- [X] Check exoscale configurations
-- [X] Check clemens' presentation
-- [X] terminal emulator instead of alacritty?
-- [ ] Preparare schemi excalidraw
-  - minimal
-  - input/output
-  - services
-- [X] Check exoscale with password
-- [ ] Tip browser, no cache
-- [ ] Comandi che useremo docker ecc
-- [ ] Spiegazione fastcgi
+...
