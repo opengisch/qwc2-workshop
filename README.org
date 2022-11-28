@@ -242,12 +242,210 @@ passerelle commune ».
       SKIP_NGINX: "true"
 #+end_src
 * Configuration des thèmes et des projets
-- Print
-- Basemaps
-- ...
+** Structure du répertoire demo app
+ https://github.com/qgis/qwc2-demo-app/blob/master/doc/QWC2_Documentation.md#qwc2-configuration
+** Configuration du thème simple_bee_farming
+Nous devons ajouter l'URL où le serveur QGIS fournit le projet au
+fichier themesConfig.json
+
+#+begin_src js
+{
+    "themes":{
+        "items": [
+            {
+                "url":"http://194.182.162.37/ows/simple_bee_farming",
+                "default": true
+            }
+       ],
+        "backgroundLayers": [
+       ]
+    }
+}
+#+end_src
+** Préparation d'un projet QGIS simple
+Nous préparons maintenant un projet simple dans QGIS avec crs 2056 et
+au moins une couche avec des géométries enregistrées dans un gpkg.
+Nous sauvegardons le projet en tant que QGS (et non QGZ).
+
+Appelons le projet =simple_project= et téléchargeons-le sur le serveur
+dans le répertoire =qgis/simple_project=.
+
+Pour créer le répertoire, nous utilisons la commande mkdir.
+Il peut être nécessaire de changer le propriétaire du répertoire.
+
+#+begin_src sh
+  mkdir qgis/simple_project
+  chown ubuntu:ubuntu qgis/simple_project
+#+end_src
+** Projet QGIS et themesConfig.json
+Certains paramètres du projet peuvent être configurés directement dans
+le projet dans QGIS. D'autres, en revanche, doivent être configurés
+dans le fichier =themesConfig.json=, qui contient des informations sur
+les projets publiés dans le webgis.
+
+QWC2 utilisera ces informations et celles provenant des requêtes
+GetCapabilities adressées au serveur QGIS pour créer le fichier
+=themes.json= qui sera ensuite utilisé par l'application javascript.
+
+https://github.com/qgis/qwc2-demo-app/blob/master/doc/QWC2_Documentation.md#theme-configuration-qgis-projects-and-the-themesconfigjson-file
+
+** Ajout de notre projet
+Nous téléchargeons notre projet sur le serveur avec par exemple sftp
+et l'ajoutons ensuite au fichier =themesConfig.json=.
+#+begin_src js
+{
+    "themes":{
+        "items": [
+            {
+                "url":"http://194.182.162.37/ows/simple_project",
+                "default": true
+            }
+       ],
+        "backgroundLayers": [
+       ]
+    }
+}
+#+end_src
+** Basemaps
+Les cartes de base sont configurées globalement dans le fichier
+=themesConfig.json= et pour chaque projet (thème), il est possible de
+définir celles à utiliser.
+#+begin_src js
+  {
+      "themes":{
+          "items": [
+              {
+                  "url":"http://194.182.162.37/ows/simple_project",
+                  "mapCrs": "EPSG:2056",
+                  "default": true,
+                  "backgroundLayers": [
+                      {
+                          "name": "swisstopo-pk",
+                          "visibility": false
+                      }
+                  ]
+              }
+          ],
+          "backgroundLayers": [
+              {
+                  "type": "wmts",
+                  "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/2056/{TileMatrix}/{TileCol}/{TileRow}.jpeg",
+                  "title": "Swisstopo",
+                  "name": "swisstopo-pk",
+                  "tileMatrixPrefix": "",
+                  "tileMatrixSet": "2056_27",
+                  "originX": 2420000.0,
+                  "originY": 1350000.0,
+                  "projection:": "EPSG:2056",
+                  "resolutions": [4000,3750,3500,3250,3000,2750,2500,2250,2000,1750,1500,1250,1000,750,650,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25],
+                  "tileSize": [256, 256],
+                  "attribution": "Swisstopo",
+                  "attributionUrl": "https://www.swisstopo.admin.ch/",
+                  "thumbnail": "swisstopo_lk.png"
+              }
+          ]
+      }
+  }
+#+end_src
+
+Voici d'autres exemples de cartes de base qui peuvent être utilisées :
+
+#+begin_src js
+      "backgroundLayers": [
+        {
+          "type": "wmts",
+          "url": "https://wmts.asit-asso.ch/wmts/1.0.0/asitvd.fond_gris/default/Default/0/2056/{TileMatrix}/{TileRow}/{TileCol}.png",
+          "title": "ASIT Gris",
+          "name": "asit-gr",
+          "tileMatrixSet": "2056",
+          "tileMatrixPrefix": "",
+          "originX": 2420000.0,
+          "originY": 1350000.0,
+          "crs": "EPSG:2056",
+          "resolutions": [4000.0,3750.0,3500.0,3250.0,3000.0,2750.0,2500.0,2250.0,2000.0,1750.0,1500.0,1250.0,1000.0,750.0,650.0,500.0,250.0,100.0,50.0,20.0,10.0,5.0,2.5,2.0,1.5,1.0,0.5,0.25,0.09999999999999999,0.049999999999999996],
+          "tileSize": [256, 256],
+          "thumbnail": "asit_gris.png"
+        },
+        {
+          "type": "wmts",
+          "url": "https://wmts.asit-asso.ch/wmts/1.0.0/asitvd.fond_couleur/default/Default/0/2056/{TileMatrix}/{TileRow}/{TileCol}.png",
+          "title":"ASIT Couleur",
+          "name":"asit-col",
+          "tileMatrixSet": "2056",
+          "tileMatrixPrefix": "",
+          "originX": 2420000.0,
+          "originY": 1350000.0,
+          "crs": "EPSG:2056",
+          "resolutions": [4000.0,3750.0,3500.0,3250.0,3000.0,2750.0,2500.0,2250.0,2000.0,1750.0,1500.0,1250.0,1000.0,750.0,650.0,500.0,250.0,100.0,50.0,20.0,10.0,5.0,2.5,2.0,1.5,1.0,0.5,0.25,0.09999999999999999,0.049999999999999996],
+          "tileSize": [256, 256],
+          "thumbnail":"asit_couleur.png"
+        },
+        {
+          "type": "wmts",
+          "url": "https://wmts.asit-asso.ch/wmts/1.0.0/asitvd.fond_cadastral/default/Default/0/2056/{TileMatrix}/{TileRow}/{TileCol}.png",
+          "title":"ASIT Cadastral",
+          "name":"asit-cad",
+          "tileMatrixSet": "2056",
+          "tileMatrixPrefix": "",
+          "originX": 2420000.0,
+          "originY": 1350000.0,
+          "crs": "EPSG:2056",
+          "resolutions": [4000.0,3750.0,3500.0,3250.0,3000.0,2750.0,2500.0,2250.0,2000.0,1750.0,1500.0,1250.0,1000.0,750.0,650.0,500.0,250.0,100.0,50.0,20.0,10.0,5.0,2.5,2.0,1.5,1.0,0.5,0.25,0.09999999999999999,0.049999999999999996],
+          "tileSize": [256, 256],
+          "thumbnail":"asit_cadastral.png"
+        },
+        {
+          "type": "wmts",
+          "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/2056/{TileMatrix}/{TileCol}/{TileRow}.jpeg",
+          "title": "Swisstopo",
+          "name": "swisstopo-pk",
+          "tileMatrixPrefix": "",
+          "tileMatrixSet": "2056_27",
+          "originX": 2420000.0,
+          "originY": 1350000.0,
+          "projection:": "EPSG:2056",
+          "resolutions": [4000,3750,3500,3250,3000,2750,2500,2250,2000,1750,1500,1250,1000,750,650,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25],
+          "tileSize": [256, 256],
+          "attribution": "Swisstopo",
+          "attributionUrl": "https://www.swisstopo.admin.ch/",
+          "thumbnail": "swisstopo_lk.png"
+        },
+        {
+          "type": "wmts",
+          "url": "http://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/2056/{TileMatrix}/{TileCol}/{TileRow}.jpeg",
+          "title": "Swisstopo image",
+          "name": "swisstopo-lb",
+          "tileMatrixPrefix": "",
+          "tileMatrixSet": "2056_28",
+          "originX": 2420000.0,
+          "originY": 1350000.0,
+          "projection:": "EPSG:2056",
+          "resolutions": [4000,3750,3500,3250,3000,2750,2500,2250,2000,1750,1500,1250,1000,750,650,500,250,100,50,20,10,5,2.5,2,1.5,1,0.5,0.25],
+          "tileSize": [256, 256],
+          "attribution": "Swisstopo",
+          "attributionUrl": "https://www.swisstopo.admin.ch/",
+          "thumbnail": "swisstopo_lb.png"
+        }
+      ]
+#+end_src
+** Search providers
+Les "fournisseurs de recherche" sont configurés dans le fichier
+js/SearchProviders.js et l'application de démonstration contient déjà
+plusieurs exemples et de la documentation.
+
+Nous ajoutons la possibilité d'utiliser les fournisseurs de recherche
+'coordinates' et 'geoadmin' à notre projet.
+
+#+begin_src js
+"searchProviders": ["coordinates", "geoadmin"]
+#+end_src
+
 * Configuration de l'application
-- Desktop and Mobile
-- Disable plugins
-* Search Providers
-* WebGIS Signalo Structure
-...
+QWC2 a une structure modulaire basée sur des plugins. Chaque outil de
+l'application est en fait un plugin. Dans le fichier
+static/config.json, les plugins qui seront utilisés dans notre
+application sont configurés. Ils sont divisés en 2 sections
+différentes (mobile et desktop). Examinons-les ensemble et désactivons
+le plugin des signets par exemple.
+
+
